@@ -1,0 +1,84 @@
+body{
+    font-family: cursive, sans-serif;
+    font-size: 36px;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    padding:2rem;
+    background: radial-gradient(circle, rgb(177, 223, 251) 10%, rgba(255, 255, 255, 1) 100%);
+}
+
+#search{
+    display:flex;
+    gap:1rem;
+    padding: 2rem 0.5rem;
+    
+}
+
+:root {
+    --bg-color: #f8fafd;
+    --card-bg: #ffffff;
+    --primary-text: #1f1f1f;
+    --secondary-text: #5f6368;
+    --accent-blue: #04152a;
+    --border-stroke: #e3e3e3;
+}
+
+#weather-display {
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    /* Updated to Flexbox */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers cards if they don't fill a row */
+    gap: 16px;
+    
+    max-width: 600px;
+    margin: 40px auto;
+    background: var(--bg-color);
+    padding: 24px;
+    border-radius: 28px;
+}
+
+/* Ensure the cards grow to fill space but don't shrink too small */
+#weather-display div {
+    flex: 1 1 140px; /* grow, shrink, and a base width of 140px */
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border-stroke);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Keep the address/header full width in the flex layout */
+#weather-display div:first-child {
+    flex: 1 1 100%; 
+    background: linear-gradient(135deg, #ffffff, #f0f4f9);
+}
+
+#loader::after {
+  content: "⏳";
+  margin-left: 6px;
+}
+
+#weather-display div:hover {
+    border-color: var(--accent-blue);
+}
+
+/* The Label (e.g., "Temp") */
+.weather-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--secondary-text);
+    font-weight: 600;
+}
+
+/* The Value (e.g., "72°") */
+.weather-value {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
