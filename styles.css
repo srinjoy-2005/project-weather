@@ -15,6 +15,15 @@ body{
     
 }
 
+.display-container{
+    display: flex;
+    justify-content: space-evenly;
+    gap:1rem;
+    align-items: center;
+
+    /* flex-direction: column; */
+}
+
 :root {
     --bg-color: #f8fafd;
     --card-bg: #ffffff;
@@ -57,11 +66,6 @@ body{
     background: linear-gradient(135deg, #ffffff, #f0f4f9);
 }
 
-#loader::after {
-  content: "⏳";
-  margin-left: 6px;
-}
-
 #weather-display div:hover {
     border-color: var(--accent-blue);
 }
@@ -82,3 +86,8 @@ body{
     color: var(--primary-text);
 }
 
+
+/*Loader part*/
+.hidden{
+    display: none;
+}

@@ -11,7 +11,7 @@
     Weather
 
     <div id="search">
-        <form action="#">
+        <form action="#" id = "search-form">
             <input type="text" placeholder="Enter city name"  id="search-input" autofocus required>
             <button type="submit" id="search-button">Search</button>
         </form>
@@ -19,11 +19,12 @@
     
     <div class="display-container">
         <div id="weather-display">
-            No data yet
-            <div id="loader" class="hidden"></div>
+            Enter a city to get weather
         </div>
         <div id="gif-area">
-
+            <div id="loader" class="hidden">
+                <img src="Loading Downloading GIF by Vera Verreschi.gif" alt="Loading">
+            </div>
         </div>
     </div>
 

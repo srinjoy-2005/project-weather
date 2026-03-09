@@ -12,7 +12,7 @@ function hitWeatherApi() {
             console.log(data.resolvedAddress);
 
             class DataFromApi {
-                constructor(address, lat, long, temp, feelslike, humidity, cloudcover, datetime) {
+                constructor(address, lat, long, temp, feelslike, humidity, cloudcover, precip) {
                     this.address = address;
                     this.lat = lat;
                     this.long = long;
@@ -20,7 +20,7 @@ function hitWeatherApi() {
                     this.feelslike = feelslike;
                     this.humidity = humidity;
                     this.cloudcover = cloudcover;
-                    this.datetime = datetime;
+                    this.precip = precip;
                 }
             }
 
@@ -32,7 +32,7 @@ function hitWeatherApi() {
                 weatherData.feelslike, 
                 weatherData.humidity,
                 weatherData.cloudcover,
-                weatherData.datetime
+                weatherData.precipprob
             );
         });
 }
@@ -46,12 +46,12 @@ function getLocation(){
 function handleError(error){
     console.error("Error fetching weather data:", error);
     const displayArea = document.getElementById("weather-display");
-    displayArea.textContent = error.message || "An error occurred while fetching weather data.";
+    displayArea.textContent = error;
 }
 
 function displayWeather(data){
     const displayArea = document.getElementById("weather-display");
-    displayArea.innerHTML = ``;
+    // displayArea.innerHTML = ``;
     Object.entries(data).forEach(([key, value]) => {
         const item = document.createElement("div");
         
@@ -75,6 +75,9 @@ function displayWeather(data){
         if (key ==="temp"){
             key="Temperature";
         }
+        if (key === 'precip'){
+            key='Chance of Precipitation(%)'
+        }
 
         item.innerHTML = `
             <span class="weather-label">${key}</span>
@@ -93,35 +96,85 @@ function hideLoader() {
 }
 
 
-let userlocation ;
-const searchBtn = document.getElementById("search-button");
+function showGif(){
+    const gif = document.getElementById("weather-gif");
+    if (gif){
+        gif.classList.remove("hidden");
+    }
+}
 
-searchBtn.addEventListener("click", function(e) {
+function hideGif(){
+    const gif = document.getElementById("weather-gif");
+    if (gif){
+        gif.classList.add("hidden");
+    }
+}
+// function 
+
+function determineGif(data){
+    console.log("Deciding Gif");
+    console.log(data);
+    const temp = data.feelslike;
+    const precip = data.precip;
+    // console.log(typeof(temp));
+    // console.log(typeof(precip));
+    if (temp<5){
+        return "Freezing Cold Weather GIF by SpongeBob SquarePants.gif";
+    }else{
+        if (precip>90){
+            return "Raining Weather Report GIF.gif";
+        }
+        if (temp>35){
+            return "Blazing Heat Wave GIF.gif";
+        }
+        return undefined;
+    }
+
+}
+
+let userlocation ;
+const searchForm = document.getElementById("search-form");
+
+searchForm.addEventListener("submit", (e)=> {
     e.preventDefault();
+    hideGif();
     getLocation();
+    (()=>{
+        const displayArea = document.getElementById("weather-display");
+        displayArea.innerHTML = ``;
+    })();
+
     showLoader();
-    hitWeatherApi().then(
+    hitWeatherApi()
+    .then(
         data=>{
             console.log(data);
             displayWeather(data);
+            return data;
         }
+        
     )
+    .then((data)=>{
+        const gifAddress = determineGif(data);
+        console.log(gifAddress);
+        
+        const gifArea = document.getElementById('gif-area');
+        let gif = document.getElementById('weather-gif'); 
+        if (!gif){
+            gif = document.createElement("img");
+            gif.id = 'weather-gif';
+            gifArea.appendChild(gif);
+        }
+        gif.src = gifAddress;
+        showGif();
+    })
     .catch(error => {
         console.error("Error caught in event listener of button", error);
-        handleError(error);
+        setTimeout(() => {
+            handleError("Possibly invalid input")
+        },1000);
+        handleError("Try again or Refresh!");
     })
     .finally(hideLoader);
-
-
-    // hitWeatherApi().then(data=>{
-    //     const gifArea = document.getElementById("gif-area");
-    //     gifArea.innerHTML = ``;
-    //     // const 
-
-    // })
-    // .catch(error => {
-    //     console.error("Error caught in event listener of button for GIF", error);
-    //     handleError(error);
-    // });
 });
 
